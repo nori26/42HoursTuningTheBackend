@@ -93,6 +93,7 @@ app.post('/api/client/records/:recordId/comments', async (req, res, next) => {
 
 app.get('/api/client/categories', async (req, res, next) => {
   try {
+    console.log("test categories get")
     await api.getCategories(req, res);
   } catch(e) {
     console.log(e);
