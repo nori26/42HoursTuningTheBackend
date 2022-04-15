@@ -310,9 +310,9 @@ const tomeActive = async (req, res) => {
   const countQs = 'select count(*) from record_comment where linked_record_id = ?';
   const searchLastQs = 'select * from record_last_access where user_id = ? and record_id = ?';
   
+  puttime(start, i++);
+  start = new Date();
   for (let i = 0; i < recordResult.length; i++) {
-    puttime(start, i++);
-    start = new Date();
     const resObj = {
       recordId: null,
       title: '',
@@ -377,7 +377,7 @@ const tomeActive = async (req, res) => {
     resObj.updatedAt = updatedAt;
 
     items[i] = resObj;
-    puttime(start, i++);
+    puttime(start, i);
     start = new Date();
   }
 
