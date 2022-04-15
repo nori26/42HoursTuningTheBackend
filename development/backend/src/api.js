@@ -234,24 +234,26 @@ const tomeActive = async (req, res) => {
     res.status(401).send();
     return;
   }
+  puttime(start, i++);
+  start = new Date();
 
   let offset = Number(req.query.offset);
   let limit = Number(req.query.limit);
+
 
   if (Number.isNaN(offset) || Number.isNaN(limit)) {
     offset = 0;
     limit = 10;
   }
-  puttime(start, i++);
-  start = new Date();
+
 
   const searchMyGroupQs = `select * from group_member where user_id = ?`;
   const [myGroupResult] = await pool.query(searchMyGroupQs, [user.user_id]);
+  puttime(start, i++);
+  start = new Date();
 
   const targetCategoryAppGroupList = [];
   const searchTargetQs = `select * from category_group where group_id = ?`;
-  puttime(start, i++);
-  start = new Date();
 
   for (let i = 0; i < myGroupResult.length; i++) {
     const groupId = myGroupResult[i].group_id;
@@ -266,12 +268,15 @@ const tomeActive = async (req, res) => {
       });
     }
   }
+  puttime(start, i++);
+  start = new Date();
 
   let searchRecordQs =
     'select * from record where status = "open" and (category_id, application_group) in (';
   let recordCountQs =
     'select count(*) from record where status = "open" and (category_id, application_group) in (';
   const param = [];
+
 
   for (let i = 0; i < targetCategoryAppGroupList.length; i++) {
     if (i !== 0) {
@@ -284,13 +289,12 @@ const tomeActive = async (req, res) => {
     param.push(targetCategoryAppGroupList[i].categoryId);
     param.push(targetCategoryAppGroupList[i].applicationGroup);
   }
+
   searchRecordQs += ' ) order by updated_at desc, record_id  limit ? offset ?';
   recordCountQs += ' )';
   param.push(limit);
   param.push(offset);
-  
-  puttime(start, i++);
-  start = new Date();
+
   
 
   const [recordResult] = await pool.query(searchRecordQs, param);
