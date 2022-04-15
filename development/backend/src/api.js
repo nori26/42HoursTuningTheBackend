@@ -9,7 +9,7 @@ const mysql = require('mysql2/promise');
 
 function puttime(start, place) {
 	var duration = new Date() - start;
-	console.error('%s: %d', place, duration);
+	console.error('time %s: %d', place, duration);
 }
 
 // MEMO: 設定項目はここを参考にした
@@ -235,20 +235,29 @@ const tomeActive = async (req, res) => {
     res.status(401).send();
     return;
   }
+  start = new Date();
 
   let offset = Number(req.query.offset);
   let limit = Number(req.query.limit);
+  puttime(start, i++);
+  start = new Date();
 
   if (Number.isNaN(offset) || Number.isNaN(limit)) {
     offset = 0;
     limit = 10;
   }
+  puttime(start, i++);
+  start = new Date();
 
   const searchMyGroupQs = `select * from group_member where user_id = ?`;
   const [myGroupResult] = await pool.query(searchMyGroupQs, [user.user_id]);
+  puttime(start, i++);
+  start = new Date();
 
   const targetCategoryAppGroupList = [];
   const searchTargetQs = `select * from category_group where group_id = ?`;
+  puttime(start, i++);
+  start = new Date();
 
   for (let i = 0; i < myGroupResult.length; i++) {
     const groupId = myGroupResult[i].group_id;
@@ -263,12 +272,16 @@ const tomeActive = async (req, res) => {
       });
     }
   }
+  puttime(start, i++);
+  start = new Date();
 
   let searchRecordQs =
     'select * from record where status = "open" and (category_id, application_group) in (';
   let recordCountQs =
     'select count(*) from record where status = "open" and (category_id, application_group) in (';
   const param = [];
+  puttime(start, i++);
+  start = new Date();
 
   for (let i = 0; i < targetCategoryAppGroupList.length; i++) {
     if (i !== 0) {
@@ -281,11 +294,15 @@ const tomeActive = async (req, res) => {
     param.push(targetCategoryAppGroupList[i].categoryId);
     param.push(targetCategoryAppGroupList[i].applicationGroup);
   }
+  puttime(start, i++);
+  start = new Date();
   searchRecordQs += ' ) order by updated_at desc, record_id  limit ? offset ?';
   recordCountQs += ' )';
   param.push(limit);
   param.push(offset);
   
+  puttime(start, i++);
+  start = new Date();
   
 
   const [recordResult] = await pool.query(searchRecordQs, param);
@@ -300,6 +317,8 @@ const tomeActive = async (req, res) => {
     'select * from record_item_file where linked_record_id = ? order by item_id asc limit 1';
   const countQs = 'select count(*) from record_comment where linked_record_id = ?';
   const searchLastQs = 'select * from record_last_access where user_id = ? and record_id = ?';
+  puttime(start, i++);
+  start = new Date();
 
   for (let i = 0; i < recordResult.length; i++) {
     const resObj = {
@@ -315,7 +334,6 @@ const tomeActive = async (req, res) => {
       thumbNailItemId: null,
       updatedAt: '',
     };
-
     const line = recordResult[i];
     
     const recordId = recordResult[i].record_id;
@@ -327,27 +345,23 @@ const tomeActive = async (req, res) => {
     let thumbNailItemId = null;
     let commentCount = 0;
     let isUnConfirmed = true;
-
     const [userResult] = await pool.query(searchUserQs, [createdBy]);
     if (userResult.length === 1) {
       createdByName = userResult[0].name;
     }
-
     const [groupResult] = await pool.query(searchGroupQs, [applicationGroup]);
     if (groupResult.length === 1) {
       applicationGroupName = groupResult[0].name;
     }
-
     const [itemResult] = await pool.query(searchThumbQs, [recordId]);
     if (itemResult.length === 1) {
       thumbNailItemId = itemResult[0].item_id;
     }
-
     const [countResult] = await pool.query(countQs, [recordId]);
     if (countResult.length === 1) {
       commentCount = countResult[0]['count(*)'];
     }
-
+  
     const [lastResult] = await pool.query(searchLastQs, [user.user_id, recordId]);
     if (lastResult.length === 1) {
       
@@ -357,7 +371,7 @@ const tomeActive = async (req, res) => {
         isUnConfirmed = false;
       }
     }
-
+  
     resObj.recordId = recordId;
     resObj.title = line.title;
     resObj.applicationGroup = applicationGroup;
@@ -372,11 +386,14 @@ const tomeActive = async (req, res) => {
 
     items[i] = resObj;
   }
+  puttime(start, i++);
+  start = new Date();
 
   const [recordCountResult] = await pool.query(recordCountQs, param);
   if (recordCountResult.length === 1) {
     count = recordCountResult[0]['count(*)'];
   }
+  puttime(start, i++);
 
   res.send({ count: count, items: items });
 };
