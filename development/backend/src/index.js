@@ -1,6 +1,5 @@
 const express = require('express')
 const app = express();
-var fs = require('fs')
 
 app.use(express.json({limit: '10mb'}))
 
@@ -95,7 +94,6 @@ app.post('/api/client/records/:recordId/comments', async (req, res, next) => {
 
 app.get('/api/client/categories', async (req, res, next) => {
   try {
-    fs.writeFile('/tmp/out.txt', 'test')
     // console.log("test categories get")
     await api.getCategories(req, res);
   } catch(e) {
