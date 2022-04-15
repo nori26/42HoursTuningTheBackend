@@ -313,6 +313,7 @@ const tomeActive = async (req, res) => {
   puttime(start, i++);
   start = new Date();
   for (let i = 0; i < recordResult.length; i++) {
+    let n = 0;
     const resObj = {
       recordId: null,
       title: '',
@@ -337,23 +338,32 @@ const tomeActive = async (req, res) => {
     let thumbNailItemId = null;
     let commentCount = 0;
     let isUnConfirmed = true;
+    puttime(start, n++);
+    start = new Date();
     const [userResult] = await pool.query(searchUserQs, [createdBy]);
     if (userResult.length === 1) {
       createdByName = userResult[0].name;
     }
+    puttime(start, n++);
+    start = new Date();
     const [groupResult] = await pool.query(searchGroupQs, [applicationGroup]);
     if (groupResult.length === 1) {
       applicationGroupName = groupResult[0].name;
     }
+    puttime(start, n++);
+    start = new Date();
     const [itemResult] = await pool.query(searchThumbQs, [recordId]);
     if (itemResult.length === 1) {
       thumbNailItemId = itemResult[0].item_id;
     }
+    puttime(start, n++);
+    start = new Date();
     const [countResult] = await pool.query(countQs, [recordId]);
     if (countResult.length === 1) {
       commentCount = countResult[0]['count(*)'];
     }
-  
+    puttime(start, n++);
+    start = new Date();
     const [lastResult] = await pool.query(searchLastQs, [user.user_id, recordId]);
     if (lastResult.length === 1) {
       
@@ -363,7 +373,8 @@ const tomeActive = async (req, res) => {
         isUnConfirmed = false;
       }
     }
-  
+    puttime(start, n++);
+    start = new Date();
     resObj.recordId = recordId;
     resObj.title = line.title;
     resObj.applicationGroup = applicationGroup;
@@ -375,7 +386,6 @@ const tomeActive = async (req, res) => {
     resObj.isUnConfirmed = isUnConfirmed;
     resObj.thumbNailItemId = thumbNailItemId;
     resObj.updatedAt = updatedAt;
-
     items[i] = resObj;
     puttime(start, i);
     start = new Date();
