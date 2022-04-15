@@ -353,6 +353,7 @@ const tomeActive = async (req, res) => {
 
 //here !
     start = new Date();
+    console.log("%s | %s | time", countQs, [recordId])
     const [countResult] = await pool.query(countQs, [recordId]);
     puttime(start, n++);
     start = new Date();
@@ -361,6 +362,7 @@ const tomeActive = async (req, res) => {
     }
     puttime(start, n++);
     start = new Date();
+//here !
 
 
     const [lastResult] = await pool.query(searchLastQs, [user.user_id, recordId]);
