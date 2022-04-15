@@ -338,20 +338,14 @@ const tomeActive = async (req, res) => {
     let thumbNailItemId = null;
     let commentCount = 0;
     let isUnConfirmed = true;
-    puttime(start, n++);
-    start = new Date();
     const [userResult] = await pool.query(searchUserQs, [createdBy]);
     if (userResult.length === 1) {
       createdByName = userResult[0].name;
     }
-    puttime(start, n++);
-    start = new Date();
     const [groupResult] = await pool.query(searchGroupQs, [applicationGroup]);
     if (groupResult.length === 1) {
       applicationGroupName = groupResult[0].name;
     }
-    puttime(start, n++);
-    start = new Date();
     const [itemResult] = await pool.query(searchThumbQs, [recordId]);
     if (itemResult.length === 1) {
       thumbNailItemId = itemResult[0].item_id;
@@ -373,8 +367,6 @@ const tomeActive = async (req, res) => {
         isUnConfirmed = false;
       }
     }
-    puttime(start, n++);
-    start = new Date();
     resObj.recordId = recordId;
     resObj.title = line.title;
     resObj.applicationGroup = applicationGroup;
