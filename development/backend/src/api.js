@@ -9,7 +9,7 @@ const mysql = require('mysql2/promise');
 
 function puttime(start, place) {
 	var duration = new Date() - start;
-	console.log('%s: %d', place, duration);
+	console.error('%s: %d', place, duration);
 }
 
 // MEMO: 設定項目はここを参考にした
