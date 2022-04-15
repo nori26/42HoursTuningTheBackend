@@ -30,7 +30,7 @@ app.get('/api/client/records/:recordId', async (req, res, next) => {
 
 app.get('/api/client/record-views/tomeActive', async (req, res, next) => {
   try {
-    // console.log("test categories get")
+    console.error("test categories get")
     await api.tomeActive(req, res);
   } catch(e) {
     console.log(e);

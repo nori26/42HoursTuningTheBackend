@@ -218,7 +218,7 @@ const getRecord = async (req, res) => {
 // GET /record-views/tomeActive
 // 自分宛一覧
 const tomeActive = async (req, res) => {
-  console.log("test categories get")
+  console.error("test categories get")
   let user = await getLinkedUser(req.headers);
 
   if (!user) {
