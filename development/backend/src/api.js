@@ -350,14 +350,19 @@ const tomeActive = async (req, res) => {
     if (itemResult.length === 1) {
       thumbNailItemId = itemResult[0].item_id;
     }
-    puttime(start, n++);
+
+//here !
     start = new Date();
     const [countResult] = await pool.query(countQs, [recordId]);
+    puttime(start, n++);
+    start = new Date();
     if (countResult.length === 1) {
       commentCount = countResult[0]['count(*)'];
     }
     puttime(start, n++);
     start = new Date();
+
+
     const [lastResult] = await pool.query(searchLastQs, [user.user_id, recordId]);
     if (lastResult.length === 1) {
       
