@@ -371,8 +371,7 @@ const tomeActive = async (req, res) => {
 
     puttime(start, n++);
     start = new Date();
-    // console.log("type : %s", typeof(countResult))
-    console.log(countResult)
+
     if (countResult.length === 1) {
       commentCount = countResult[0]['count(*)'];
     }
