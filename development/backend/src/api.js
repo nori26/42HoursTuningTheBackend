@@ -329,7 +329,7 @@ const tomeActive = async (req, res) => {
   var [coms] = await pool.query(mycountQs);
   // console.log(mycountQs)
   console.log(coms[0])
-  var countArray = new Array(recordResult.length);
+  var countArray = new Array();
 
 
   for (let i = 0; i < coms.length;) {
@@ -343,9 +343,7 @@ const tomeActive = async (req, res) => {
     console.log("j : %d", j);
     countArray.push(j)
   }
-  console.log(countArray)
-  console.log(countArray[0])
-  console.log(typeof(countArray[0]))
+
   for (let i = 0; i < recordResult.length; i++) {
     let n = 0;
     const resObj = {
@@ -386,17 +384,17 @@ const tomeActive = async (req, res) => {
     }
 
     console.log("%s | %s | time", countQs, [recordId])
+    commentCount = countArray[i];
+// //here !
+//     const [countResult] = await pool.query(countQs, [recordId]);
+// //here !
 
-//here !
-    const [countResult] = await pool.query(countQs, [recordId]);
-//here !
 
-
-    if (countResult.length === 1) {
-      commentCount = countResult[0]['count(*)'];
-      let k = countArray[i];
-      console.log("%d  %d", commentCount, k)
-    }
+//     if (countResult.length === 1) {
+//       commentCount = countResult[0]['count(*)'];
+//       let k = countArray[i];
+//       console.log("%d  %d", commentCount, k)
+//     }
     const [lastResult] = await pool.query(searchLastQs, [user.user_id, recordId]);
     if (lastResult.length === 1) {
       
