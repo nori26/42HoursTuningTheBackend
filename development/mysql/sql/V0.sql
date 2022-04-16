@@ -51,7 +51,6 @@ CREATE TABLE `record_last_access` (
 CREATE TABLE `record_comment` (
     `comment_id` bigint NOT NULL AUTO_INCREMENT,
     `linked_record_id` VARCHAR(64) NOT NULL,
-    `index_linked_record_id` index,
     `value` VARCHAR(512) NOT NULL,
     `created_by` bigint NOT NULL,
     `created_at` TIMESTAMP NOT NULL,
