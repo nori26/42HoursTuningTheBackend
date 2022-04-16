@@ -336,7 +336,7 @@ const tomeActive = async (req, res) => {
     let j = 0;
     var val = coms[i]['linked_record_id'];
     while (i < coms.length && val === coms[i]['linked_record_id']){
-      console.log([i]['linked_record_id']);
+      console.log(coms[i]['linked_record_id']);
       j++;
       i++;
     }
