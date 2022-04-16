@@ -319,28 +319,6 @@ const tomeActive = async (req, res) => {
   const countQs = 'select count(*) from record_comment where linked_record_id = ?'; // 7.93 sec Re 1.41
   const searchLastQs = 'select * from record_last_access where user_id = ? and record_id = ?'; // 1.63 sec インデックスはった
 
-  var mycountQs = 'select * from record_comment where'
-  var idstr = ' linked_record_id = ';
-  for (let i = 0; i < recordResult.length; i++) {
-    mycountQs += idstr + recordResult[i].record_id;
-    if (i + 1 < recordResult.length)
-      mycountQs += ' or'
-  }
-  var [coms] = await pool.query(mycountQs);
-  // console.log(mycountQs)
-  var countArray = new Array();
-
-
-  for (let i = 0; i < coms.length;) {
-    let j = 0;
-    var val = coms[i]['linked_record_id'];
-    while (i < coms.length && val === coms[i]['linked_record_id']){
-      j++;
-      i++;
-    }
-    countArray.push(j)
-  }
-
   for (let i = 0; i < recordResult.length; i++) {
     let n = 0;
     const resObj = {
@@ -380,17 +358,14 @@ const tomeActive = async (req, res) => {
       thumbNailItemId = itemResult[0].item_id;
     }
 
-    commentCount = countArray[i];
-// //here !
-//     const [countResult] = await pool.query(countQs, [recordId]);
-// //here !
+//here !
+    const [countResult] = await pool.query(countQs, [recordId]);
+//here !
 
 
-//     if (countResult.length === 1) {
-//       commentCount = countResult[0]['count(*)'];
-//       let k = countArray[i];
-//       console.log("%d  %d", commentCount, k)
-//     }
+    if (countResult.length === 1) {
+      commentCount = countResult[0]['count(*)'];
+    }
     const [lastResult] = await pool.query(searchLastQs, [user.user_id, recordId]);
     if (lastResult.length === 1) {
       
