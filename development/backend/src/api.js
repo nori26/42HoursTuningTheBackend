@@ -318,6 +318,7 @@ const tomeActive = async (req, res) => {
     'select * from record_item_file where linked_record_id = ? order by item_id asc limit 1'; // 0.13 sec Re 0.00
   const countQs = 'select count(*) from record_comment where linked_record_id = ?'; // 7.93 sec Re 1.41
   const searchLastQs = 'select * from record_last_access where user_id = ? and record_id = ?'; // 1.63 sec インデックスはった
+
   var mycountQs = 'select * from record_comment where'
   var idstr = ' linked_record_id = ';
   for (let i = 0; i < recordResult.length; i++) {
@@ -326,8 +327,20 @@ const tomeActive = async (req, res) => {
       mycountQs += ' or'
   }
   var [coms] = await pool.query(mycountQs);
-  console.log(mycountQs)
-  console.log(coms)
+  // console.log(mycountQs)
+  // console.log(coms)
+  var countArray = new Array(recordResult.length);
+
+
+  for (let i = 0; i < coms.length; i++) {
+    let j = 0;
+    var val = coms[i]['linked_record_id'];
+    while (i < coms.length && val === coms[i]['linked_record_id']){
+      j++;
+      i++;
+    }
+    countArray.push(j)
+  }
   for (let i = 0; i < recordResult.length; i++) {
     let n = 0;
     const resObj = {
@@ -376,6 +389,7 @@ const tomeActive = async (req, res) => {
 
     if (countResult.length === 1) {
       commentCount = countResult[0]['count(*)'];
+      console.log("%d  %d", commentCount, countArray[i])
     }
     const [lastResult] = await pool.query(searchLastQs, [user.user_id, recordId]);
     if (lastResult.length === 1) {
