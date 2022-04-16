@@ -127,8 +127,6 @@ const getRecord = async (req, res) => {
   const recordQs = `select * from record where record_id = ?`; // 0.86 sec //ALL
 
   const [recordResult] = await pool.query(recordQs, [`${recordId}`]);
-  console.log(recordResult)
-
   if (recordResult.length !== 1) {
     res.status(404).send({});
     return;
@@ -213,7 +211,7 @@ const getRecord = async (req, res) => {
   for (let i = 0; i < itemResult.length; i++) {
     const item = itemResult[i];
     const [fileResult] = await pool.query(searchFileQs, [item.linked_file_id]);
-    console.log([item.linked_file_id])
+    console.log(item.linked_file_id)
     let fileName = '';
     if (fileResult.length !== 0) {
       fileName = fileResult[0].name;
