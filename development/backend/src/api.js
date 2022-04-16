@@ -318,6 +318,7 @@ const tomeActive = async (req, res) => {
       mycountQs += ' or'
   }
   res = await pool.query(mycountQs);
+  console.log(mycountQs)
   console.log(res)
   puttime(start, i++);
   start = new Date();
