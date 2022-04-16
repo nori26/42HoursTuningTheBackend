@@ -309,16 +309,7 @@ const tomeActive = async (req, res) => {
     'select * from record_item_file where linked_record_id = ? order by item_id asc limit 1';
   const countQs = 'select count(*) from record_comment where linked_record_id = ?';
   const searchLastQs = 'select * from record_last_access where user_id = ? and record_id = ?';
-  // var mycountQs = 'select * from record_comment where'
-  // var idstr = ' linked_record_id = ';
-  // for (let i = 0; i < recordResult.length; i++) {
-  //   mycountQs += idstr + recordResult[i].record_id;
-  //   if (i + 1 < recordResult.length)
-  //     mycountQs += ' or'
-  // }
-  // var [coms] = await pool.query(mycountQs);
-  // console.log(mycountQs)
-  // console.log(coms)
+
   pool.query('CREATE INDEX index_linked_record_id ON record_comment(linked_record_id)')
   puttime(start, i++);
   start = new Date();
@@ -879,11 +870,6 @@ const getCategories = async (req, res) => {
   }
 
   const [rows] = await pool.query(`select * from category`);
-
-  for (const row of rows) {
-    
-  }
-
   const items = {};
 
   for (let i = 0; i < rows.length; i++) {
