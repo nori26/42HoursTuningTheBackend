@@ -73,6 +73,7 @@ CREATE TABLE `category_group` (
 CREATE TABLE `session` (
     `session_id` bigint NOT NULL AUTO_INCREMENT,
     `value` VARCHAR(256) NOT NULL,
+    `index_value` index,
     `linked_user_id` bigint NOT NULL,
     `created_at` TIMESTAMP NOT NULL,
     PRIMARY KEY (`session_id`)
