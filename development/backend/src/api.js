@@ -328,7 +328,7 @@ const tomeActive = async (req, res) => {
   }
   var [coms] = await pool.query(mycountQs);
   // console.log(mycountQs)
-  // console.log(coms)
+  console.log(coms[0])
   var countArray = new Array(recordResult.length);
 
 
