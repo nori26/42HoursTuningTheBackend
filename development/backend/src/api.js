@@ -391,7 +391,8 @@ const tomeActive = async (req, res) => {
 
     if (countResult.length === 1) {
       commentCount = countResult[0]['count(*)'];
-      console.log("%d  %d", commentCount, countArray[i])
+      let k = countArray[i];
+      console.log("%d  %d", commentCount, k)
     }
     const [lastResult] = await pool.query(searchLastQs, [user.user_id, recordId]);
     if (lastResult.length === 1) {
