@@ -319,7 +319,7 @@ const tomeActive = async (req, res) => {
   }
   res = await pool.query(mycountQs);
   console.log(mycountQs)
-  console.log(res)
+  console.log(res[0])
   puttime(start, i++);
   start = new Date();
   for (let i = 0; i < recordResult.length; i++) {
