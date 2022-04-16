@@ -311,15 +311,14 @@ const tomeActive = async (req, res) => {
   const searchLastQs = 'select * from record_last_access where user_id = ? and record_id = ?';
   var mycountQs = 'select * from record_comment where'
   var idstr = ' linked_record_id = ';
-  var res;
   for (let i = 0; i < recordResult.length; i++) {
     mycountQs += idstr + recordResult[i].record_id;
     if (i + 1 < recordResult.length)
       mycountQs += ' or'
   }
-  res = await pool.query(mycountQs);
+  var coms = await pool.query(mycountQs);
   console.log(mycountQs)
-  console.log(res[0])
+  console.log(coms[0])
   puttime(start, i++);
   start = new Date();
   for (let i = 0; i < recordResult.length; i++) {
