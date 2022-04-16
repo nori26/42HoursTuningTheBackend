@@ -318,19 +318,16 @@ const tomeActive = async (req, res) => {
     'select * from record_item_file where linked_record_id = ? order by item_id asc limit 1'; // 0.13 sec Re 0.00
   const countQs = 'select count(*) from record_comment where linked_record_id = ?'; // 7.93 sec Re 1.41
   const searchLastQs = 'select * from record_last_access where user_id = ? and record_id = ?'; // 1.63 sec インデックスはった
-  // var mycountQs = 'select * from record_comment where'
-  // var idstr = ' linked_record_id = ';
-  // for (let i = 0; i < recordResult.length; i++) {
-  //   mycountQs += idstr + recordResult[i].record_id;
-  //   if (i + 1 < recordResult.length)
-  //     mycountQs += ' or'
-  // }
-  // var [coms] = await pool.query(mycountQs);
-  // console.log(mycountQs)
-  // console.log(coms)
-//   pool.query('CREATE INDEX index_linked_record_id ON record_comment(linked_record_id)')
-  puttime(start, i++);
-  start = new Date();
+  var mycountQs = 'select * from record_comment where'
+  var idstr = ' linked_record_id = ';
+  for (let i = 0; i < recordResult.length; i++) {
+    mycountQs += idstr + recordResult[i].record_id;
+    if (i + 1 < recordResult.length)
+      mycountQs += ' or'
+  }
+  var [coms] = await pool.query(mycountQs);
+  console.log(mycountQs)
+  console.log(coms)
   for (let i = 0; i < recordResult.length; i++) {
     let n = 0;
     const resObj = {
@@ -370,16 +367,12 @@ const tomeActive = async (req, res) => {
       thumbNailItemId = itemResult[0].item_id;
     }
 
-    start = new Date();
     console.log("%s | %s | time", countQs, [recordId])
 
 //here !
     const [countResult] = await pool.query(countQs, [recordId]);
 //here !
 
-
-    puttime(start, n++);
-    start = new Date();
 
     if (countResult.length === 1) {
       commentCount = countResult[0]['count(*)'];
@@ -405,16 +398,12 @@ const tomeActive = async (req, res) => {
     resObj.thumbNailItemId = thumbNailItemId;
     resObj.updatedAt = updatedAt;
     items[i] = resObj;
-    puttime(start, i);
-    start = new Date();
   }
 
   const [recordCountResult] = await pool.query(recordCountQs, param);
   if (recordCountResult.length === 1) {
     count = recordCountResult[0]['count(*)'];
   }
-  puttime(start, i++);
-
   res.send({ count: count, items: items });
 };
 
