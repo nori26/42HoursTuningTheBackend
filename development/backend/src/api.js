@@ -332,7 +332,7 @@ const tomeActive = async (req, res) => {
   var countArray = new Array(recordResult.length);
 
 
-  for (let i = 0; i < coms.length; i++) {
+  for (let i = 0; i < coms.length;) {
     let j = 0;
     var val = coms[i]['linked_record_id'];
     while (i < coms.length && val === coms[i]['linked_record_id']){
