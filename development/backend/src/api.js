@@ -198,22 +198,22 @@ const getRecord = async (req, res) => {
 
   const searchFileQs = `select * from file where file_id = ?`; // インデックスはった 3.83 ALL Re 2.23
  
-  var fileArray = new Array(itemResult.length);
-  var searchFileQs2 = `select * from file where`; // インデックスはった 3.83 ALL Re 2.23
-  for (let i = 0; i < itemResult.length; i++)
-  {
-    const item = itemResult[i];
-    searchFileQs2 += ' file_id = ' + [item.linked_file_id];
-    if (i + 1 != itemResult.length)
-      searchFileQs2 += ' or';
-  }
-  console.log(searchFileQs2);
-  myres = await pool.query(searchFileQs2);
-  console.log(myres);
+  // var fileArray = new Array(itemResult.length);
+  // var searchFileQs2 = `select * from file where`; // インデックスはった 3.83 ALL Re 2.23
+  // for (let i = 0; i < itemResult.length; i++)
+  // {
+  //   const item = itemResult[i];
+  //   searchFileQs2 += ' file_id = ' + [item.linked_file_id];
+  //   if (i + 1 != itemResult.length)
+  //     searchFileQs2 += ' or';
+  // }
+  // console.log(searchFileQs2);
+  // myres = await pool.query(searchFileQs2);
+  // console.log(myres);
   for (let i = 0; i < itemResult.length; i++) {
     const item = itemResult[i];
     const [fileResult] = await pool.query(searchFileQs, [item.linked_file_id]);
-
+    console.log([item.linked_file_id])
     let fileName = '';
     if (fileResult.length !== 0) {
       fileName = fileResult[0].name;
