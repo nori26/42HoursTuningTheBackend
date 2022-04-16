@@ -1,5 +1,6 @@
 const express = require('express')
 const app = express();
+var fs = require('fs')
 
 app.use(express.json({limit: '10mb'}))
 
@@ -30,6 +31,7 @@ app.get('/api/client/records/:recordId', async (req, res, next) => {
 
 app.get('/api/client/record-views/tomeActive', async (req, res, next) => {
   try {
+    console.error("test categories get")
     await api.tomeActive(req, res);
   } catch(e) {
     console.log(e);
@@ -93,6 +95,8 @@ app.post('/api/client/records/:recordId/comments', async (req, res, next) => {
 
 app.get('/api/client/categories', async (req, res, next) => {
   try {
+    fs.writeFileSync('/tmp/out.txt', 'test')
+    // console.log("test categories get")
     await api.getCategories(req, res);
   } catch(e) {
     console.log(e);
