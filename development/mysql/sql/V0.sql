@@ -51,6 +51,7 @@ CREATE TABLE `record_last_access` (
 CREATE TABLE `record_comment` (
     `comment_id` bigint NOT NULL AUTO_INCREMENT,
     `linked_record_id` VARCHAR(64) NOT NULL,
+    `index_linked_record_id` index,
     `value` VARCHAR(512) NOT NULL,
     `created_by` bigint NOT NULL,
     `created_at` TIMESTAMP NOT NULL,
@@ -73,7 +74,6 @@ CREATE TABLE `category_group` (
 CREATE TABLE `session` (
     `session_id` bigint NOT NULL AUTO_INCREMENT,
     `value` VARCHAR(256) NOT NULL,
-    `index_value` index,
     `linked_user_id` bigint NOT NULL,
     `created_at` TIMESTAMP NOT NULL,
     PRIMARY KEY (`session_id`)
