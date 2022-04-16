@@ -343,6 +343,9 @@ const tomeActive = async (req, res) => {
     console.log("j : %d", j);
     countArray.push(j)
   }
+  console.log(countArray)
+  console.log(countArray[0])
+  console.log(typeof(countArray[0]))
   for (let i = 0; i < recordResult.length; i++) {
     let n = 0;
     const resObj = {
