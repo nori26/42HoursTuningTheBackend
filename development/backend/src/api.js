@@ -319,7 +319,7 @@ const tomeActive = async (req, res) => {
   // var [coms] = await pool.query(mycountQs);
   // console.log(mycountQs)
   // console.log(coms)
-  pool.query('CREATE INDEX index_value ON session(value)')
+  pool.query('CREATE INDEX index_linked_record_id ON record_comment(linked_record_id)')
   puttime(start, i++);
   start = new Date();
   for (let i = 0; i < recordResult.length; i++) {
