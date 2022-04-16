@@ -862,20 +862,24 @@ const postComments = async (req, res) => {
 // GET categories/
 // カテゴリーの取得
 const getCategories = async (req, res) => {
+  console.log("categories time")
+  start = new Date();
   let user = await getLinkedUser(req.headers);
-
   if (!user) {
     res.status(401).send();
     return;
   }
+  puttime(start, i++);
+  start = new Date();
 
   const [rows] = await pool.query(`select * from category`);
   const items = {};
-
+  puttime(start, i++);
+  start = new Date();
   for (let i = 0; i < rows.length; i++) {
     items[`${rows[i]['category_id']}`] = { name: rows[i].name };
   }
-
+  puttime(start, i++);
   res.send({ items });
 };
 
