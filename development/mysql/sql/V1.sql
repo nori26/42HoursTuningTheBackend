@@ -1,4 +1,6 @@
 -- ordered by tabel
+
+-- use index
 ALTER TABLE user ADD INDEX index_user_id(user_id);
 
 ALTER TABLE group_info ADD INDEX index_group_id(group_id);
@@ -25,7 +27,11 @@ ALTER TABLE category_group ADD INDEX index_group_id(group_id);
 
 ALTER TABLE session ADD INDEX index_value(value);
 
-ALTER TABLE file ADD INDEX index_file_id(file_id);
+-- use numeric data type
+
+-- ALTER TABLE record alter column record_id bigint;
+ALTER TABLE record_item_file alter column linked_record_id bigint;
+ALTER TABLE record_comment alter column linked_record_id bigint;
 
 -- explain select count(*) from group_member;
 
