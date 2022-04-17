@@ -30,8 +30,8 @@ ALTER TABLE session ADD INDEX index_value(value);
 -- use numeric data type
 
 -- ALTER TABLE record alter column record_id bigint;
-ALTER TABLE record_item_file alter column linked_record_id bigint;
-ALTER TABLE record_comment alter column linked_record_id bigint;
+-- ALTER TABLE record_item_file alter column linked_record_id bigint;
+-- ALTER TABLE record_comment alter column linked_record_id bigint;
 
 -- explain select count(*) from group_member;
 
