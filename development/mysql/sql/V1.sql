@@ -11,6 +11,7 @@ ALTER TABLE record ADD INDEX index_status(status);
 ALTER TABLE record ADD INDEX index_created_by(created_by);
 ALTER TABLE record ADD INDEX index_category_id(category_id);
 
+ALTER TABLE record_item_file ADD INDEX index_linked_item_id(item_id);
 ALTER TABLE record_item_file ADD INDEX index_linked_record_id(linked_record_id);
 
 ALTER TABLE record_last_access ADD INDEX index_user_and_record(user_id, record_id);
