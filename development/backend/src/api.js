@@ -225,8 +225,6 @@ const getRecord = async (req, res) => {
 // GET /record-views/tomeActive
 // 自分宛一覧
 const tomeActive = async (req, res) => {
-  console.error("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
-  console.log("dddddddddddddddddddddddddddddddddddddddddddddddddddddd")
   let i = 0;
   var start = new Date();
   let user = await getLinkedUser(req.headers);
@@ -234,8 +232,6 @@ const tomeActive = async (req, res) => {
     res.status(401).send();
     return;
   }
-  puttime(start, i++);
-  start = new Date();
 
   let offset = Number(req.query.offset);
   let limit = Number(req.query.limit);
@@ -249,8 +245,6 @@ const tomeActive = async (req, res) => {
 
   const searchMyGroupQs = `select * from group_member where user_id = ?`;
   const [myGroupResult] = await pool.query(searchMyGroupQs, [user.user_id]);
-  puttime(start, i++);
-  start = new Date();
 
   const targetCategoryAppGroupList = [];
   const searchTargetQs = `select * from category_group where group_id = ?`;
@@ -268,8 +262,6 @@ const tomeActive = async (req, res) => {
       });
     }
   }
-  puttime(start, i++);
-  start = new Date();
 
   let searchRecordQs =
     'select * from record where status = "open" and (category_id, application_group) in (';
@@ -309,19 +301,7 @@ const tomeActive = async (req, res) => {
     'select * from record_item_file where linked_record_id = ? order by item_id asc limit 1';
   const countQs = 'select count(*) from record_comment where linked_record_id = ?';
   const searchLastQs = 'select * from record_last_access where user_id = ? and record_id = ?';
-  // var mycountQs = 'select * from record_comment where'
-  // var idstr = ' linked_record_id = ';
-  // for (let i = 0; i < recordResult.length; i++) {
-  //   mycountQs += idstr + recordResult[i].record_id;
-  //   if (i + 1 < recordResult.length)
-  //     mycountQs += ' or'
-  // }
-  // var [coms] = await pool.query(mycountQs);
-  // console.log(mycountQs)
-  // console.log(coms)
-//   pool.query('CREATE INDEX index_linked_record_id ON record_comment(linked_record_id)')
-  puttime(start, i++);
-  start = new Date();
+
   for (let i = 0; i < recordResult.length; i++) {
     let n = 0;
     const resObj = {
@@ -361,16 +341,10 @@ const tomeActive = async (req, res) => {
       thumbNailItemId = itemResult[0].item_id;
     }
 
-    start = new Date();
-    console.log("%s | %s | time", countQs, [recordId])
 
-//here !
     const [countResult] = await pool.query(countQs, [recordId]);
-//here !
 
 
-    puttime(start, n++);
-    start = new Date();
 
     if (countResult.length === 1) {
       commentCount = countResult[0]['count(*)'];
@@ -396,16 +370,12 @@ const tomeActive = async (req, res) => {
     resObj.thumbNailItemId = thumbNailItemId;
     resObj.updatedAt = updatedAt;
     items[i] = resObj;
-    puttime(start, i);
-    start = new Date();
   }
 
   const [recordCountResult] = await pool.query(recordCountQs, param);
   if (recordCountResult.length === 1) {
     count = recordCountResult[0]['count(*)'];
   }
-  puttime(start, i++);
-
   res.send({ count: count, items: items });
 };
 
